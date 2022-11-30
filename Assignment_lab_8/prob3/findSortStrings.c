@@ -1,14 +1,19 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-void stringsSort(long, char[][100]);
+void stringsSort(long, char (*)[64]);
 
 int main(){
     long n;
     printf("Enter the number of strings to be sorted: ");
     scanf("%ld", &n);
 
-    char str[n][100];
+    if(n == 0){
+        printf("Enter a valid number above 0\n");
+        return 0;
+    }
+
+    char str[n][64];
     printf("Enter the strings: \n");
     for(int i=0; i<n; i++){
         scanf(" %[^\n]s", str[i]);

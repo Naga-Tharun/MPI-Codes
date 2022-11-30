@@ -7,11 +7,13 @@
 .LC1:
 	.string	"%ld"
 .LC2:
-	.string	"Enter the strings: "
+	.string	"Enter a valid number above 0"
 .LC3:
+	.string	"Enter the strings: "
+.LC4:
 	.string	" %[^\n]s"
 	.align 8
-.LC4:
+.LC5:
 	.string	"\nThe sorted order of the strings is:"
 	.text
 	.globl	main
@@ -49,140 +51,114 @@ main:
 	leaq	.LC1(%rip), %rdi
 	movl	$0, %eax
 	call	__isoc99_scanf@PLT
-	movq	-80(%rbp), %rcx
-	leaq	-1(%rcx), %rax
-	movq	%rax, -72(%rbp)
-	movq	%rcx, %rax
-	movq	%rax, %r14
+	movq	-80(%rbp), %rax
+	testq	%rax, %rax
+	jne	.L2
+	leaq	.LC2(%rip), %rdi
+	call	puts@PLT
+	movl	$0, %eax
+	jmp	.L3
+.L2:
+	movq	-80(%rbp), %rax
+	leaq	-1(%rax), %rdx
+	movq	%rdx, -72(%rbp)
+	movq	%rax, %rdx
+	movq	%rdx, %r14
 	movl	$0, %r15d
-	imulq	$800, %r15, %rdx
-	imulq	$0, %r14, %rax
-	leaq	(%rdx,%rax), %rsi
-	movl	$800, %eax
-	mulq	%r14
-	addq	%rdx, %rsi
-	movq	%rsi, %rdx
-	movq	%rcx, %rdx
-	movq	%rdx, %rax
-	salq	$2, %rax
-	addq	%rdx, %rax
-	leaq	0(,%rax,4), %rdx
-	addq	%rdx, %rax
-	salq	$2, %rax
-	movq	%rcx, %rax
-	movq	%rax, %r12
+	movq	%rax, %rdx
+	movq	%rdx, %r12
 	movl	$0, %r13d
-	imulq	$800, %r13, %rdx
-	imulq	$0, %r12, %rax
-	leaq	(%rdx,%rax), %rsi
-	movl	$800, %eax
-	mulq	%r12
-	addq	%rdx, %rsi
-	movq	%rsi, %rdx
-	movq	%rcx, %rdx
-	movq	%rdx, %rax
-	salq	$2, %rax
-	addq	%rdx, %rax
-	leaq	0(,%rax,4), %rdx
-	addq	%rdx, %rax
-	salq	$2, %rax
+	salq	$6, %rax
 	movq	%rax, %rdx
 	movl	$16, %eax
 	subq	$1, %rax
 	addq	%rdx, %rax
-	movl	$16, %edi
+	movl	$16, %ecx
 	movl	$0, %edx
-	divq	%rdi
+	divq	%rcx
 	imulq	$16, %rax, %rax
 	movq	%rax, %rdx
 	andq	$-4096, %rdx
 	movq	%rsp, %rcx
 	subq	%rdx, %rcx
 	movq	%rcx, %rdx
-.L2:
+.L4:
 	cmpq	%rdx, %rsp
-	je	.L3
+	je	.L5
 	subq	$4096, %rsp
 	orq	$0, 4088(%rsp)
-	jmp	.L2
-.L3:
+	jmp	.L4
+.L5:
 	movq	%rax, %rdx
 	andl	$4095, %edx
 	subq	%rdx, %rsp
 	movq	%rax, %rdx
 	andl	$4095, %edx
 	testq	%rdx, %rdx
-	je	.L4
+	je	.L6
 	andl	$4095, %eax
 	subq	$8, %rax
 	addq	%rsp, %rax
 	orq	$0, (%rax)
-.L4:
+.L6:
 	movq	%rsp, %rax
 	addq	$0, %rax
 	movq	%rax, -64(%rbp)
-	leaq	.LC2(%rip), %rdi
+	leaq	.LC3(%rip), %rdi
 	call	puts@PLT
 	movl	$0, -84(%rbp)
-	jmp	.L5
-.L6:
+	jmp	.L7
+.L8:
 	movl	-84(%rbp), %eax
-	movslq	%eax, %rdx
-	movq	%rdx, %rax
-	salq	$2, %rax
-	addq	%rdx, %rax
-	leaq	0(,%rax,4), %rdx
-	addq	%rdx, %rax
-	salq	$2, %rax
-	movq	-64(%rbp), %rdx
+	cltq
+	salq	$6, %rax
+	movq	%rax, %rdx
+	movq	-64(%rbp), %rax
 	addq	%rdx, %rax
 	movq	%rax, %rsi
-	leaq	.LC3(%rip), %rdi
+	leaq	.LC4(%rip), %rdi
 	movl	$0, %eax
 	call	__isoc99_scanf@PLT
 	addl	$1, -84(%rbp)
-.L5:
+.L7:
 	movl	-84(%rbp), %eax
 	movslq	%eax, %rdx
 	movq	-80(%rbp), %rax
 	cmpq	%rax, %rdx
-	jl	.L6
+	jl	.L8
 	movq	-80(%rbp), %rax
 	movq	-64(%rbp), %rdx
 	movq	%rdx, %rsi
 	movq	%rax, %rdi
 	call	stringsSort@PLT
-	leaq	.LC4(%rip), %rdi
+	leaq	.LC5(%rip), %rdi
 	call	puts@PLT
 	movl	$0, -88(%rbp)
-	jmp	.L7
-.L8:
+	jmp	.L9
+.L10:
 	movl	-88(%rbp), %eax
-	movslq	%eax, %rdx
-	movq	%rdx, %rax
-	salq	$2, %rax
-	addq	%rdx, %rax
-	leaq	0(,%rax,4), %rdx
-	addq	%rdx, %rax
-	salq	$2, %rax
-	movq	-64(%rbp), %rdx
+	cltq
+	salq	$6, %rax
+	movq	%rax, %rdx
+	movq	-64(%rbp), %rax
 	addq	%rdx, %rax
 	movq	%rax, %rdi
 	call	puts@PLT
 	addl	$1, -88(%rbp)
-.L7:
+.L9:
 	movl	-88(%rbp), %eax
 	movslq	%eax, %rdx
 	movq	-80(%rbp), %rax
 	cmpq	%rax, %rdx
-	jl	.L8
+	jl	.L10
 	movl	$0, %eax
+.L3:
 	movq	%rbx, %rsp
 	movq	-56(%rbp), %rbx
 	xorq	%fs:40, %rbx
-	je	.L10
+	je	.L12
 	call	__stack_chk_fail@PLT
-.L10:
+.L12:
 	leaq	-40(%rbp), %rsp
 	popq	%rbx
 	popq	%r12
