@@ -31,11 +31,6 @@ loop1:
             cmp r9,r15;
             jge break2;
 
-            xor r12,r12;
-            xor r13,r13;
-            xor r10,r10;
-            xor r11,r11;
-
             mov r10,r14;
             add r10,r9;
 
@@ -50,8 +45,6 @@ loop1:
 
             cmp r12,r13;
             jl swap;
-
-            cmp r12, r13;
             jg break2;
 
             inc r9;
