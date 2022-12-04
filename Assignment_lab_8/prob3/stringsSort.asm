@@ -15,9 +15,8 @@ loop1:
 
     mov rax,rbx;        make rax mini
 
-    mov r8,rcx;         counter for loop2
-
-    inc r8;             j
+    mov r8,rcx;         counter for loop2,j
+    inc r8;             j=i+1
     loop2:
         cmp r8,rsi;
         jge swap1;
