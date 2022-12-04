@@ -2,71 +2,78 @@ global stringsSort
 section .text
 
 stringsSort:
+    mov rcx,$0;         counter for loop1, i
+    mov r15,$8;
+    imul r15,$8;        64
+loop1:
+    cmp rcx,rsi;          
+    jge return;
 
-    ; ignore for debugging
-    ; comment these statements
-    mov r8, rsi;
-    mov r11, $8;
-    imul r11, $8;
-    mov r9, rsi;
-    add r9, r11;
-    mov r10, [r9];
-    cmp [r8], r10;
-    jl return;
-    mov r12, [r8];
-    mov r13, [r9];
-    mov [r8], r13;
-    mov [r9], r12;
-    ret;
-    ; debug
+    mov rbx,r15;        rbx store the first element to swap with         
+    imul rbx,rcx;       64*rcx
+    add rbx,rdi;        rdi+64*rcx
 
-    cmp rdi, $1;        check if size of the list of strings is 1 or 0
-    jle return;          if <= 1 then return
-    mov r8, rsi;
-    mov r11, $8;
-    imul r11, $8;
-    mov r9, rsi;
-    add r9, r11;
-    mov r12, rdi;
-    dec r12;
-    mov r10, [r8];
-    mov r13, r8;
+    mov rax,rbx;        make rax mini
 
-checkMin:
-    mov rsi, [r9];
-    cmp r10, rsi;
-    jg store;
-    dec r12;
-    cmp r12, $0;
-    je nextIndex;
-    add r9, r11;
-    jmp checkMin;
+    mov r8,rcx;         counter for loop2
 
-nextIndex:
-    mov r14, [r8];
-    mov r15, [r13];
-    mov [r8], r15;
-    mov [r13], r14;
-    dec rdi;
-    cmp rdi, $1;
-    je return;
-    add r8, r11;
-    mov r10, [r8];
-    mov r13, r8;
-    mov r9, r8;
-    add r9, r11;
-    mov r12, rdi;
-    dec r12;
-    jmp checkMin;
+    inc r8;             j
+    loop2:
+        cmp r8,rsi;
+        jge swap1;
 
-store:
-    mov r10, [r9];
-    mov r13, r9;
-    dec r12;
-    cmp r12, $0;
-    je nextIndex;
-    add r9, r11;
-    jmp checkMin;
+        mov r14,r15;        current    
+        imul r14,r8;        64*r8
+        add r14,rdi;        rdi+64*r8
+        
+        mov r9,$0;          counter for lexiographic
+        
+        compare:
+            cmp r9,r15;
+            jge break2;
+
+            xor r12,r12;
+            xor r13,r13;
+            xor r10,r10;
+            xor r11,r11;
+
+            mov r10,r14;
+            add r10,r9;
+
+            mov r11,rax;
+            add r11,r9;
+
+            movzx r13,byte[r11];
+            movzx r12,byte[r10];
+
+            cmp r13, $0;
+            je break2
+
+            cmp r12,r13;
+            jl swap;
+
+            cmp r12, r13;
+            jg break2;
+
+            inc r9;
+            jmp compare;
+        swap:
+            mov rax,r14;
+    break2:
+        inc r8;
+        jmp loop2;
+
+swap1:  
+    mov r9,$0;
+    mov r11, [rax];
+    mov r10, [rbx];
+    mov [rax], r10;
+    mov [rbx], r11;
+
+break1:
+    inc rcx;
+    jmp loop1;
 
 return:
+    mov rax,rbx;
     ret;

@@ -126,8 +126,8 @@ main:
 	movq	-80(%rbp), %rax
 	cmpq	%rax, %rdx
 	jl	.L8
-	movq	-80(%rbp), %rax
-	movq	-64(%rbp), %rdx
+	movq	-80(%rbp), %rdx
+	movq	-64(%rbp), %rax
 	movq	%rdx, %rsi
 	movq	%rax, %rdi
 	call	stringsSort@PLT

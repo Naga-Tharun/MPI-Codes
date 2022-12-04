@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-void stringsSort(long, char (*)[64]);
+void stringsSort(char ar[][64], int64_t);
 
 int main(){
     long n;
@@ -19,7 +19,7 @@ int main(){
         scanf(" %[^\n]s", str[i]);
     }
 
-    stringsSort(n, str);
+    stringsSort(str, n);
     
     printf("\nThe sorted order of the strings is:\n");
     for(int i=0; i<n; i++){
