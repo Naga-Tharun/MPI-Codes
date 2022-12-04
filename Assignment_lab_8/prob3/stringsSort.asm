@@ -27,7 +27,6 @@ loop1:
         add r14,rdi;        rdi+64*r8
         
         mov r9,$0;          counter for lexiographic
-        
         compare:
             cmp r9,r15;
             jge break2;
