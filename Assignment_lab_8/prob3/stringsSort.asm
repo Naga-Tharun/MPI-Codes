@@ -73,5 +73,4 @@ break1:
     jmp loop1;
 
 return:
-    mov rax,rbx;
     ret;
