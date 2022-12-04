@@ -64,7 +64,6 @@ loop1:
         jmp loop2;
 
 swap1:  
-    mov r9,$0;
     mov r11, [rax];
     mov r10, [rbx];
     mov [rax], r10;
