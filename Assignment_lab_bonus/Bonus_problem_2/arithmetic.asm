@@ -41,6 +41,7 @@ main:
 
     call division;                      calls division function integer1 / integer 2
     call print_div_result;				prints the quotient in terminal
+    ; call print_sum_result;
 
 	mov rax, $0;						resetting rax to 0
 	ret;								termiantes the program
@@ -92,37 +93,59 @@ update_input2:
     ret;                                returns to input_integers function
 
 addition:
+    push rbp;
     mov rax, $0;                        make rax = 0
     add rax, [integer_1];               add integer_1 value to rax
     add rax, [integer_2];               add integer_2 value to rax
     mov [sum_result], rax;              move rax to sum_result
+    pop rbp;
     ret;                                return to main function
 
 subtraction:
+    push rbp;
     mov rax, $0;                        make rax = 0
     add rax, [integer_1];               add integer_1 value to rax
     sub rax, [integer_2];               subtract integer_2 value to rax
     mov [sub_result], rax;              move rax to sub_result
+    pop rbp;
     ret;                                return to main function
 
 multiplication:
+    push rbp;
     mov r8, [integer_1];                move integer_1 value to r8
     mov rax, $1;                        make rax = 1
     imul rax, r8;                       multiply integer1 to rax and store in rax
     mov r8, [integer_2];                move integer_2 value to r8
     imul rax, r8;                       multiply integer2 to rax and store in rax
     mov [mul_result], rax;              moving rax to mul_result
+    pop rbp;
     ret;                                return to main function
 
 division:
-    xor rax, rax;
-    xor rdx, rdx;                       make rdx = 0
-    mov rsi, [integer_2];                move integer_2 value to r8
-    mov rax, [integer_1];               move integer_1 value to rax
+    push rbp;
+    xor r10, r10;
+    ; xor rdx, rdx;                       make rdx = 0
+    mov r9, [integer_1];                move integer_2 value to rbx
+    xor r8,r8;
+    loop1:
+        add r10, [integer_2];               move integer_1 value to rax
+        mov r12,r10;
+        sub r10,r9;
+        cmp r10,$0;
+        jg break1;
+        inc r8;
+        ; mov [div_result], rsi;
+        ; ret
+        jmp loop1;
+    break1:
+        mov r9, $1;
+        mov [div_result], r8;
+        pop rbp;
+        ret
     ; mov rsi, $2;
-    div rsi;                            dividing rax with r8   rax / r8
-    mov [div_result], rdx;              quotient rax is stored in [div_result]
-    ret;                                return to main function
+    ; idiv rbx;                            dividing rax with rbx   rax / rbx
+    ; mov [div_result], rax;              quotient rax is stored in [div_result]
+    ; ret;                                return to main function
 
 print_sum_result:
     push rbp;
