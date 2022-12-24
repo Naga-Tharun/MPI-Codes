@@ -30,6 +30,9 @@ main:
 	mov rbx, $0;						counter for taking 2 integers as input
 	call input_integers;			    takes input of integers
 
+    call division;                      calls division function integer1 / integer 2
+    call print_div_result;				prints the quotient in terminal
+
     call addition;                      calls addition function integer1 + integer2
 	call print_sum_result;				prints the sum in terminal
 
@@ -38,10 +41,6 @@ main:
 
     call multiplication;                calls multiplication function integer1 * integer 2
     call print_mul_result;				prints the product in terminal
-
-    call division;                      calls division function integer1 / integer 2
-    call print_div_result;				prints the quotient in terminal
-    ; call print_sum_result;
 
 	mov rax, $0;						resetting rax to 0
 	ret;								termiantes the program
@@ -56,7 +55,6 @@ input_integers:
 	call print_take_input;				prints "Enter integer 2: " in command line
 	call get_input_from_commandline;	takes input of integer
     call update_input2;
-
 	ret;								else returns to previous function main
 
 print_take_input:
@@ -66,7 +64,6 @@ print_take_input:
 	mov rax, $0;						reset rax to 0
 	call printf;						call printf on rdi, rsi as arguments
 	pop rbp;
-
 	ret;								returns to previous function input_findSum_process
 
 get_input_from_commandline:
@@ -75,7 +72,6 @@ get_input_from_commandline:
 	mov rsi, input;						rsi has input memory
 	call scanf;							calling scanf on rdi, rsi for taking input of integer
 	pop rbp;
-
 	ret;								returns to previous function input_findSum_process
 
 update_input1:
@@ -123,29 +119,24 @@ multiplication:
 
 division:
     push rbp;
-    xor r10, r10;
-    ; xor rdx, rdx;                       make rdx = 0
-    mov r9, [integer_1];                move integer_2 value to rbx
-    xor r8,r8;
-    loop1:
-        add r10, [integer_2];               move integer_1 value to rax
-        mov r12,r10;
-        sub r10,r9;
-        cmp r10,$0;
-        jg break1;
-        inc r8;
-        ; mov [div_result], rsi;
-        ; ret
-        jmp loop1;
-    break1:
-        mov r9, $1;
-        mov [div_result], r8;
-        pop rbp;
-        ret
-    ; mov rsi, $2;
-    ; idiv rbx;                            dividing rax with rbx   rax / rbx
-    ; mov [div_result], rax;              quotient rax is stored in [div_result]
-    ; ret;                                return to main function
+    cdq
+    mov rax, [integer_2];                move integer_1 value to r8
+    
+    cmp rax,[integer_1];
+    jl zero;
+
+    mov r8, [integer_1];                move integer_2 value to r8
+    idiv r8;                       multiply integer2 to rax and store in rax
+    inc rax;
+    mov [div_result], rax;              moving rax to mul_result
+    pop rbp;
+    ret;                                return to main function
+    
+    zero:
+      xor rax,rax;
+      mov [div_result], rax;              moving rax to mul_result
+      pop rbp;
+      ret;                                return to main function
 
 print_sum_result:
     push rbp;
